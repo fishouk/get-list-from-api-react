@@ -6,16 +6,12 @@ const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
 class App extends Component { 
 
-    constructor(props) {
-      super(props);
-      this.state = {
-          searchString: "",
-          data: [],
-          isLoading: false,
-          error: null,
-      };
-      this.formListOfNamesSearch = this.formListOfNamesSearch.bind(this);
-    }
+    state = {
+      searchString: "",
+      data: [],
+      isLoading: false,
+      error: null,
+    };
 
     componentDidMount() {
       this.setState({ isLoading: true });
@@ -30,20 +26,18 @@ class App extends Component {
         })
         .then(data => this.setState({ data: data, isLoading: false }))
         .catch(error => this.setState({ error, isLoading: false }));
-      
-        this.refs.searchName.focus();
     }
   
-    formListOfNamesSearch() {
-      this.setState({
-        searchString: this.refs.searchName.value
+    formListOfNamesSearch = event => {
+      this.setState({        
+        searchString: event.target.value.trim().toLowerCase()
       });
     }
 
     render() {
       const { isLoading, error } = this.state;
       let data = this.state.data;
-      let search = this.state.searchString.trim().toLowerCase();
+      let search = this.state.searchString;
   
       if (search.length > 0) {
           data = data.filter(function(data) {
@@ -67,9 +61,7 @@ class App extends Component {
                       <InputGroup.Prepend>
                         <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
                       </InputGroup.Prepend>
-                      <FormControl
-                        value={this.state.searchString}
-                        ref="searchName"
+                      <FormControl                        
                         placeholder="Начните печатать"
                         onChange={this.formListOfNamesSearch}
                       />
